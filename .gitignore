@@ -1,0 +1,13 @@
+
+# Ignore Binaries
+bin/
+
+# fetch new from Makefile  
+scripts/
+
+# Environment files Ignore
+.env
+.env.*
+
+# Test directories (any folder starting with "test")
+test*/
