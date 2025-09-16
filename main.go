@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/rand"
 	"embed"
 	"fmt"
 	"io"
@@ -32,6 +33,40 @@ func GetServerAddress() string {
 	}
 
 	return fmt.Sprintf("%s:%s", host, port)
+}
+
+const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+const alphabetSize = byte(len(alphabet)) 
+
+func NanoID(n int) (string, error) {
+	if n <= 0 {
+		return "", nil
+	}
+
+	threshold := byte(256 - (256 % int(alphabetSize)))
+
+	result := make([]byte, n)
+	buf := make([]byte, 1)
+
+	for i := 0; i < n; {
+		_, err := io.ReadFull(rand.Reader, buf)
+		if err != nil {
+			return "", err
+		}
+		b := buf[0]
+		if b >= threshold {
+			continue
+		}
+		result[i] = alphabet[b%alphabetSize]
+		i++
+	}
+
+	return string(result), nil
+}
+
+func getNanoID(w http.ResponseWriter, r *http.Request) {
+	data,_ := NanoID(12)
+	fmt.Fprintf(w, "Nano ID is %s\n", data)
 }
 
 func dashboard(w http.ResponseWriter, r *http.Request) {
@@ -85,6 +120,7 @@ func pdfUpload(w http.ResponseWriter, r *http.Request)  {
 func main() {
 	http.HandleFunc("/", dashboard)
 	http.HandleFunc("/upload", pdfUpload)
+	http.HandleFunc("/id", getNanoID)
 
 
 	staticFS, _ := fs.Sub(staticFiles, "static")
