@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PDF-Fairy</title>
     <link rel="stylesheet" href="../static/styles/main.css" />
+		<script>
+			function showFiles() {
+				const input = document.getElementById("pdfs");
+				const list = document.getElementById("fileList");
+				list.innerHTML = "";
+				for (let file of input.files) {
+					let li = document.createElement("li");
+					li.textContent = file.name;
+					list.appendChild(li);
+				}
+			}
+		</script>
   </head>
 
   <body class="bg-gray-100 font-sans antialiased" >
@@ -31,7 +43,22 @@
                 </ul>
             </div>
         </div>
-				
+
+			<div>
+				  <form action="/upload" method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md w-96 space-y-4">
+					<h2 class="text-xl font-semibold text-gray-800">Upload PDF files</h2>
+					
+					<input id="pdfs" name="pdfs" type="file" multiple accept=".pdf" onchange="showFiles()" 
+						class="block w-full text-sm text-gray-700 border rounded cursor-pointer focus:outline-none">
+					
+					<ul id="fileList" class="text-sm text-gray-600 list-disc list-inside"></ul>
+					
+					<button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md">
+						Upload
+					</button>
+				</form>
+			</div>
+
 		</div>
   </body>
 </html>
