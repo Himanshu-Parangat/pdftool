@@ -35,6 +35,21 @@ func GetServerAddress() string {
 	return fmt.Sprintf("%s:%s", host, port)
 }
 
+func ensureDirs() {
+	dirs := []string{
+		"./artifacts",
+		"./artifacts/uploads",
+		"./artifacts/chuncks",
+		"./artifacts/previews",
+	}
+
+	for _, dir := range dirs {
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			log.Fatalf("Failed to create directory %s: %v", dir, err)
+		}
+	}
+}
+
 const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 const alphabetSize = byte(len(alphabet)) 
 
@@ -118,6 +133,7 @@ func pdfUpload(w http.ResponseWriter, r *http.Request)  {
 
 
 func main() {
+	ensureDirs()
 	http.HandleFunc("/", dashboard)
 	http.HandleFunc("/upload", pdfUpload)
 	http.HandleFunc("/id", getNanoID)

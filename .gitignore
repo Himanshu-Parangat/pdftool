@@ -11,3 +11,6 @@ scripts/
 
 # Test directories (any folder starting with "test")
 test*/
+
+# Ignore pdf artifacts
+artifacts/*
