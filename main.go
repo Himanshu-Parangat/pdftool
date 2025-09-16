@@ -98,35 +98,70 @@ func dashboard(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func pdfUpload(w http.ResponseWriter, r *http.Request)  {
+func pdfUpload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-
-	file, header, err := r.FormFile("pdf")
-	if err != nil {
-		http.Error(w, "No File upload", http.StatusBadRequest)
-	}
-	defer file.Close()
-
-	if filepath.Ext(header.Filename) != ".pdf" {
-		http.Error(w, "only Pdf files are allowed", http.StatusBadRequest)
-	}
-
-	out, err := os.Create("./uploads" + header.Filename)
-	if err != nil {
-		http.Error(w, "unable to create file", http.StatusInternalServerError)
-	}
-	defer out.Close()
-
-	_ , err = io.Copy(out, file)
-	if err != nil {
-		http.Error(w, "Error saving file", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprintf(w, "Uploaded %s successfully\n", header.Filename)
-	
+	if err := r.ParseMultipartForm(32 << 20); err != nil {
+		http.Error(w, "Error parsing form", http.StatusBadRequest)
+		return
+	}
+
+	files := r.MultipartForm.File["pdfs"]
+	if len(files) == 0 {
+		http.Error(w, "No files uploaded", http.StatusBadRequest)
+		return
+	}
+
+
+	for _, fileHeader := range files {
+		if filepath.Ext(fileHeader.Filename) != ".pdf" {
+			http.Error(w, "Only pdf files are allowed", http.StatusBadRequest)
+			return
+		}
+
+		file, err := fileHeader.Open()
+		if err != nil {
+			http.Error(w, "Error opening file", http.StatusInternalServerError)
+			return
+		}
+		defer file.Close()
+
+		safeName := filepath.Base(fileHeader.Filename)
+
+		var fileName, destinationPath string
+		for {
+			id, err := NanoID(15)
+			if err != nil {
+				http.Error(w, "Can't generate new id", http.StatusInternalServerError)
+				return
+			}
+
+			fileName = id + "_" + safeName
+			destinationPath = filepath.Join("./artifacts/uploads/", fileName)
+
+			if _, err := os.Stat(destinationPath); os.IsNotExist(err) {
+				break 
+			}
+		}
+
+		out, err := os.Create(destinationPath)
+		if err != nil {
+			http.Error(w, "Unable to create file", http.StatusInternalServerError)
+			return
+		}
+		defer out.Close()
+
+		_, err = io.Copy(out, file)
+		if err != nil {
+			http.Error(w, "Error saving file", http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Fprintf(w, "Saved as %s\n", fileName)
+	}
 }
 
 
