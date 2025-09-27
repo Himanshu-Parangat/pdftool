@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF-Fairy</title>
+    <link rel="stylesheet" href="../static/styles/main.css" />
+		<script src="../static/lib/Sortable.js"></script>
+		<script src="../static/utils/main.js"></script>
+		<script>
+			function showFiles() {
+				const input = document.getElementById("pdfs");
+				const list = document.getElementById("fileList");
+				list.innerHTML = "";
+				for (let file of input.files) {
+					let li = document.createElement("li");
+					li.textContent = file.name;
+					list.appendChild(li);
+				}
+			}
+		</script>
+
+			<style>
+				.selected {
+					background-color: #2563eb;
+					color: white;
+					border: 4px dashed #1d4ed8;
+				}
+
+				.opacity-40 {
+					opacity: 0.4;
+					transform: scale(1.05);
+					border: 3px solid #1d4ed8;
+				}
+
+			</style>
+  </head>
+	<body>
+		<div class="bg-white w-screen h-screen flex flex-col">
+			<nav class="flex  justify-between">
+				<div></div>
+				<div class="p-4">
+					Pdf v1
+				</div>
+				<div class="flex space-x-3">
+					<div>
+						<select>
+							<option value="">Light</option>
+							<option value="">Dark</option>
+						</select>
+					</div>
+					<div>
+						Undo
+					</div>
+					<div>
+						Redo
+					</div>
+				</div>
+			</nav>
+
+			<!-- main body -->
+			<div class="flex flex-1 ">
+
+				<!-- left pannel -->
+				<div class="flex flex-col space-y-5 ml-8 mr-8">
+					<div class="border-gray-500 border-4 rounded-2xl overflow-hidden" >
+						<div class="w-110">
+							<img src="../static/assets/previews/P-summary-1.png" 
+								alt="pdf page preview" 
+								class="object-contain w-full h-full"
+							>
+						</div>
+
+						<div class="p-4 border-t border-gray-200 flex flex-row space-x-2">
+							<div>
+								<img src="../static/icons/documents.svg" alt="document icons" class="w-10 h-10">
+							</div>
+							<div>
+								<h1 class="text-lg font-semibold text-gray-800">Document Title</h1>
+								<p class="text-sm text-gray-500">Page <span>1 / 12 </span></p>
+							</div>
+						</div>
+					</div>
+
+					<div class="border-gray-500 mt-auto border-t-4 border-l-4 border-r-4 rounded-tl-2xl rounded-tr-2xl">
+						<div class="p-4">
+							<ul class="text-sm text-gray-700 space-y-2">
+								<li><span class="font-medium">File Name:</span> document_draft.pdf</li>
+								<li><span class="font-medium">Status:</span> In Review</li>
+								<li><span class="font-medium">Last Edited:</span> Sep 15, 2025</li>
+								<li><span class="font-medium">Assigned To:</span> John Doe</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- right pannel -->
+				<div class="bg-gray-200 h-full flex-1 border-l-4 border-t-4 pl-8 pt-8 border-gray-500 rounded-tl-2xl">
+					<div class="flex flex-row h-full space-x-3">
+
+						<!-- column -->
+						<div id="col-UX9q18BSWoKzpBC">
+							
+							<!-- slot 1  -->
+							<div  class="flex flex-row   gap-4">
+									<!-- top bar -->
+									<div class="pr-4 pl-4 bg-white  rounded-2xl border-1 border-gray-200 shadow text-center cursor-move ">
+												<div class="flex flex-col justify-between">
+															<!-- handle -->
+															<div class="w-auto flex justify-center">
+																<div class=" bg-blue-800 hover:bg-blue-600 mt-3 mb-1 rounded-full w-18 h-2" ></div>
+															</div>
+
+															<!-- file info and menu -->
+															<div class="flex flex-row" >
+
+																<!-- file info  -->
+																<div class="flex-1 max-w-[170px]">
+																	<h1 class="text-lg font-semibold truncate">
+																		test-page.pdf
+																	</h1>
+																	<p class="text-sm text-gray-500 truncate">
+																		pages 2 • Size 120kb
+																	</p>
+																</div>
+
+																<!-- option menu -->
+																<div class=" rounded-l flex flex-col justify-center" >
+																	<svg xmlns="http://www.w3.org/2000/svg" 
+																		 class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+																		<path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+																	</svg>
+																</div>
+															</div>
+														
+															<!-- sperator -->
+															<div class="border-t mb-2 border-gray-300 w-full h-1"> </div>
+												</div>
+
+
+											<!-- page holder -->
+											<div id="slot-skOPwwC4USfLiJN" class="flex flex-col justify-center space-y-3 pb-5 ">
+
+												<div  class="w-50 border-4 rounded-2xl overflow-hidden border-gray-600">
+													<img src="../static/assets/previews/P-summary-1.png" 
+														alt="pdf page preview" 
+														class="object-contain w-full h-full"
+													>
+												</div>
+
+												<div class="w-50 border-4 rounded-2xl overflow-hidden border-gray-600">
+													<img src="../static/assets/previews/P-summary-1.png" 
+														alt="pdf page preview" 
+														class="object-contain w-full h-full"
+													>
+												</div>
+													
+											</div>
+									</div>
+							</div>
+
+
+
+						</div>
+
+												<div id="col-UX9q18BSWoKzpBC">
+							
+							<!-- slot 1  -->
+							<div  class="flex flex-row   gap-4">
+									<!-- top bar -->
+									<div class="pr-4 pl-4 bg-white  rounded-2xl border-1 border-gray-200 shadow text-center cursor-move ">
+												<div class="flex flex-col justify-between">
+															<!-- handle -->
+															<div class="w-auto flex justify-center">
+																<div class=" bg-blue-800 hover:bg-blue-600 mt-3 mb-1 rounded-full w-18 h-2" ></div>
+															</div>
+
+															<!-- file info and menu -->
+															<div class="flex flex-row" >
+
+																<!-- file info  -->
+																<div class="flex-1 max-w-[170px]">
+																	<h1 class="text-lg font-semibold truncate">
+																		test-page.pdf
+																	</h1>
+																	<p class="text-sm text-gray-500 truncate">
+																		pages 2 • Size 120kb
+																	</p>
+																</div>
+
+																<!-- option menu -->
+																<div class=" rounded-l flex flex-col justify-center" >
+																	<svg xmlns="http://www.w3.org/2000/svg" 
+																		 class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+																		<path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+																	</svg>
+																</div>
+															</div>
+														
+															<!-- sperator -->
+															<div class="border-t mb-2 border-gray-300 w-full h-1"> </div>
+												</div>
+
+
+											<!-- page holder -->
+											<div id="slot-skOPwwC4USfLiJN" class="flex flex-col justify-center space-y-3 pb-5 ">
+
+												<div  class="w-50 border-4 rounded-2xl overflow-hidden border-gray-600">
+													<img src="../static/assets/previews/P-summary-1.png" 
+														alt="pdf page preview" 
+														class="object-contain w-full h-full"
+													>
+												</div>
+
+												<div class="w-50 border-4 rounded-2xl overflow-hidden border-gray-600">
+													<img src="../static/assets/previews/P-summary-1.png" 
+														alt="pdf page preview" 
+														class="object-contain w-full h-full"
+													>
+												</div>
+													
+											</div>
+									</div>
+							</div>
+
+
+
+						</div>
+
+												<div id="col-UX9q18BSWoKzpBC">
+							
+							<!-- slot 1  -->
+							<div  class="flex flex-row   gap-4">
+									<!-- top bar -->
+									<div class="pr-4 pl-4 bg-white  rounded-2xl border-1 border-gray-200 shadow text-center cursor-move ">
+												<div class="flex flex-col justify-between">
+															<!-- handle -->
+															<div class="w-auto flex justify-center">
+																<div class=" bg-blue-800 hover:bg-blue-600 mt-3 mb-1 rounded-full w-18 h-2" ></div>
+															</div>
+
+															<!-- file info and menu -->
+															<div class="flex flex-row" >
+
+																<!-- file info  -->
+																<div class="flex-1 max-w-[170px]">
+																	<h1 class="text-lg font-semibold truncate">
+																		test-page.pdf
+																	</h1>
+																	<p class="text-sm text-gray-500 truncate">
+																		pages 2 • Size 120kb
+																	</p>
+																</div>
+
+																<!-- option menu -->
+																<div class=" rounded-l flex flex-col justify-center" >
+																	<svg xmlns="http://www.w3.org/2000/svg" 
+																		 class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+																		<path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+																	</svg>
+																</div>
+															</div>
+														
+															<!-- sperator -->
+															<div class="border-t mb-2 border-gray-300 w-full h-1"> </div>
+												</div>
+
+
+											<!-- page holder -->
+											<div id="slot-skOPwwC4USfLiJN" class="flex flex-col justify-center space-y-3 pb-5 ">
+
+												<div  class="w-50 border-4 rounded-2xl overflow-hidden border-gray-600">
+													<img src="../static/assets/previews/P-summary-1.png" 
+														alt="pdf page preview" 
+														class="object-contain w-full h-full"
+													>
+												</div>
+
+												<div class="w-50 border-4 rounded-2xl overflow-hidden border-gray-600">
+													<img src="../static/assets/previews/P-summary-1.png" 
+														alt="pdf page preview" 
+														class="object-contain w-full h-full"
+													>
+												</div>
+													
+											</div>
+									</div>
+							</div>
+
+
+
+						</div>
+
+
+
+					</div>
+
+				</div>
+						<script>
+							function initSortables() {
+								document.querySelectorAll('[id^="col-"]').forEach(element => {
+									new Sortable(element, {
+										group: 'column',
+										animation: 150,
+										swapThreshold: 0.65,
+										ghostClass: 'opacity-50',
+									});
+								});
+
+								document.querySelectorAll('[id^="slot-"]').forEach(element => {
+									new Sortable(element, {
+										group: 'slot',
+										animation: 150,
+										swapThreshold: 0.65,
+										ghostClass: 'opacity-40',
+										multiDrag: true,
+										selectedClass: "selected"
+
+										// scroll: true,
+										// forceAutoScrollFallback: false,
+										// scrollFn: function(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) { ... },
+										// scrollSensitivity: 30,
+										// scrollSpeed: 10,
+										// bubbleScroll: true
+
+									});
+								});
+							}
+
+							initSortables();
+
+						</script>
+
+				<!-- file upload setup -->
+						<div class="flex flex-row w-90 h-full border-dashed border-2 rounded-2xl justify-center  bg-white">
+							<div class="flex flex-col justify-center">
+								<div>
+									<div class="flex flex-row justify-center">
+										<h1 class="text-2xl font-semibold text-gray-800 mb-3">Upload PDF files</h1>
+									</div>
+
+									<form action="/upload" method="post" enctype="multipart/form-data" class="space-y-4">
+
+											<label for="pdfs" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-blue-400 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition-colors">
+													<img src="../static/icons/upload.svg" alt="document icons" class="w-10 h-10 text-amber-300">
+													<p class="mt-4 text-xl font-semibold text-gray-700">Click to upload or drag and drop</p>
+													<p class="text-sm text-gray-500">PDF, up to 10MB each</p>
+													<input id="pdfs" name="pdfs" type="file" multiple accept=".pdf" onchange="showFiles()" class="hidden">
+											</label>
+
+					
+											<div id="fileListContainer" class="space-y-2">
+													<ul id="fileList" class="text-sm text-gray-700"></ul>
+											</div>
+
+										  <button type="submit" class="w-full bg-blue-800 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors shadow-md">
+													Upload Files
+											</button>
+
+									</form>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+  <script>
+    const list = document.getElementById('items');
+    const output = document.getElementById('orderOutput');
+
+    function updateOrder() {
+      const order = Array.from(list.children).map(li => li.dataset.id);
+      output.textContent = "Current order: " + JSON.stringify(order);
+    }
+
+    new Sortable(list, {
+      animation: 150,
+      ghostClass: 'bg-blue-100',
+      onEnd: updateOrder
+    });
+
+    // initialize
+    updateOrder();
+  </script>
+		
+  </body>
+</html>
