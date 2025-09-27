@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../static/styles/main.css" />
 		<script src="../static/lib/Sortable.js"></script>
 		<script>
-			function showFiles() {
+	<script src="../static/utils/main.js"></script>
 				const input = document.getElementById("pdfs");
 				const list = document.getElementById("fileList");
 				list.innerHTML = "";
@@ -26,13 +26,11 @@
 				<div class="p-4">
 					Pdf v1
 				</div>
-				<div class="flex space-x-3">
-					<div>
-						Undo
-					</div>
-					<div>
-						Redo
-					</div>
+				<div>
+					<select id="theme-dropdown" class="bg-primary text-primary">
+						<option value="theme-light">light</option>
+						<option value="theme-dark">dark</option>
+					</select>
 				</div>
 			</nav>
 

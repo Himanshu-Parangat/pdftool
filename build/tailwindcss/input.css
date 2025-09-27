@@ -1,5 +1,73 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: oklch(0.37 0.14 266.64);
+
+@layer utilities {
+  .text-primary { color: var(--color-text-primary); }
+  .text-secondary { color: var(--color-text-secondary); }
+  .text-tertiary { color: var(--color-text-tertiary); }
+
+  .bg-primary { background-color: var(--color-bg-primary); }
+  .bg-secondary { background-color: var(--color-bg-secondary); }
+
+  .text-accent-primary { color: var(--color-accent-primary); }
+  .text-accent-secondary { color: var(--color-accent-secondary); }
+  .bg-accent-primary { background-color: var(--color-accent-primary); }
+  .bg-accent-secondary { background-color: var(--color-accent-secondary); }
+
+  .border-primary { border-color: var(--color-border-primary); }
+  .border-hover { border-color: var(--color-accent-secondary); }
+
+	/* .button-primary {background-color: var(--color-accent-primary); color: var(--color-bg-secondary); } */
+	/* .button-primary-hover:hover {background-color: var(--color-accent-secondary); color: var(--color-bg-secondary); } */
+	.button-primary {background-color: var(--color-accent-primary); }
+	.button-primary-hover:hover {background-color: var(--color-accent-secondary); }
+}
+
+/* Your existing theme classes */
+.theme-light {
+  --color-text-primary: #1f1f1f;
+  --color-text-secondary: #3a3a3a;
+  --color-text-tertiary: #5e5e5e;
+
+  --color-bg-primary: #f6f9fc;
+  --color-bg-secondary: #f2f0f5;
+
+	--color-border-primary: #888888;
+  --color-accent-primary: #4A4AD0;
+  --color-accent-secondary: #3939A6;
+}
+.theme-dark {
+  --color-bg-primary: #1f1f1f;
+  --color-bg-secondary: #2a2a2a;
+	--color-border-primary: #888888;
+  --color-accent-primary: #3434AE;
+  --color-accent-secondary: #2A2A88;
+  --color-text-primary: #f1f1f1;
+  --color-text-secondary: #cfcfcf;
+  --color-text-tertiary: #9a9a9a;
+}
+
+
+.scrollbar {
+  scrollbar-width: thin;              /* auto | thin | none */
+  scrollbar-color: var(--color-text-primary) var(--color-bg-secondary);      /* thumb | track */
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
