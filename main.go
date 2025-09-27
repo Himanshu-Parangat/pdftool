@@ -84,6 +84,21 @@ func getNanoID(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Nano ID is %s\n", data)
 }
 
+func oldDashboard(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFS(templateFiles, "components/dashboard.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.Execute(w, nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+}
+
+
 func dashboard(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFS(templateFiles, "components/index.html")
 	if err != nil {
@@ -170,6 +185,7 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 func main() {
 	ensureDirs()
 	http.HandleFunc("/", dashboard)
+	http.HandleFunc("/dashboard", oldDashboard)
 	http.HandleFunc("/upload", pdfUpload)
 	http.HandleFunc("/id", getNanoID)
 
