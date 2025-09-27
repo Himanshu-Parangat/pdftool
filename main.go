@@ -10,7 +10,9 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sync"
 	"text/template"
+	"time"
 )
 
 //go:embed components/*
@@ -113,6 +115,63 @@ func dashboard(w http.ResponseWriter, r *http.Request) {
 
 }
 
+var (
+	storedValue string
+	mu          sync.Mutex
+)
+
+func setValue(val string) {
+	mu.Lock()
+	defer mu.Unlock()
+	storedValue = val
+}
+
+func getValue() string {
+	mu.Lock()
+	defer mu.Unlock()
+	return storedValue
+}
+
+func counterSSE(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "Streaming unsupported", http.StatusInternalServerError)
+		return
+	}
+
+	lastSent := ""
+
+	for {
+		val := getValue()
+		if val != "" && val != lastSent {
+			fmt.Fprintf(w, "data: %s\n\n", val)
+			flusher.Flush()
+			lastSent = val
+		}
+
+		time.Sleep(1 * time.Second)
+
+		if r.Context().Err() != nil {
+			return
+		}
+	}
+
+}
+
+func sethtml()  {
+	data := "<div class='w-[20%] '>conneting..</div>"
+	setValue(data)
+}
+
+
+
 func pdfUpload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -184,8 +243,10 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	ensureDirs()
+	sethtml()
 	http.HandleFunc("/", dashboard)
 	http.HandleFunc("/dashboard", oldDashboard)
+	http.HandleFunc("/events", counterSSE)
 	http.HandleFunc("/upload", pdfUpload)
 	http.HandleFunc("/id", getNanoID)
 

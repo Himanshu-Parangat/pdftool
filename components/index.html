@@ -300,35 +300,17 @@
 
 
 
+	<script>
+		const evtSource = new EventSource("http://localhost:8080/events");
+		const updatesDiv = document.getElementById("columnHolder");
 
-									</form>
-								</div>
-							</div>
+		evtSource.onmessage = function(event) {
+      updatesDiv.insertAdjacentHTML("beforeend", event.data);
+    };
 
-						</div>
-					</div>
-				</div>
-				
-			</div>
-		</div>
-
-  <script>
-    const list = document.getElementById('items');
-    const output = document.getElementById('orderOutput');
-
-    function updateOrder() {
-      const order = Array.from(list.children).map(li => li.dataset.id);
-      output.textContent = "Current order: " + JSON.stringify(order);
-    }
-
-    new Sortable(list, {
-      animation: 150,
-      ghostClass: 'bg-blue-100',
-      onEnd: updateOrder
-    });
-
-    // initialize
-    updateOrder();
+    evtSource.onerror = function() {
+      updatesDiv.insertAdjacentHTML("beforeend", "<p style='color:red;'>Connection lost...</p>");
+    };
   </script>
 		
   </body>
