@@ -1,30 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PDF-Fairy</title>
-    <link rel="stylesheet" href="../static/styles/main.css" />
-		<script src="../static/lib/Sortable.js"></script>
-		<script>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="../static/styles/main.css" />
+	<!-- <link rel="stylesheet" href="../static/styles/theme.css" /> -->
+	<script src="../static/lib/Sortable.js"></script>
 	<script src="../static/utils/main.js"></script>
-				const input = document.getElementById("pdfs");
-				const list = document.getElementById("fileList");
-				list.innerHTML = "";
-				for (let file of input.files) {
-					let li = document.createElement("li");
-					li.textContent = file.name;
-					list.appendChild(li);
-				}
-			}
-		</script>
-  </head>
-	<body>
-		<div class="bg-white w-screen h-screen flex flex-col">
-			<nav class="flex  justify-between">
+</head>
+<body>
+		
+	<div class="bg-primary text-primary h-screen w-screen text-2xl flex flex-col">
+		<header>
+			<nav class="flex flex-row justify-between text-sm">
 				<div></div>
-				<div class="p-4">
-					Pdf v1
+				<div>
+					PDF Tool
 				</div>
 				<div>
 					<select id="theme-dropdown" class="bg-primary text-primary">
@@ -33,272 +25,228 @@
 					</select>
 				</div>
 			</nav>
+		</header>
 
-			<!-- main body -->
-			<div class="flex flex-1 ">
-
-				<!-- left pannel -->
-				<div class="flex flex-col space-y-5 ml-8 mr-8">
-					<div class="border-gray-500 border-4 rounded-2xl overflow-hidden" >
-						<div class="w-110">
-							<img src="../static/assets/previews/P-summary-1.png" 
-								alt="pdf page preview" 
-								class="object-contain w-full h-full"
-							>
-						</div>
-
-						<div class="p-4 border-t border-gray-200 flex flex-row space-x-2">
-							<div>
-								<img src="../static/icons/documents.svg" alt="document icons" class="w-10 h-10 text-amber-300">
-							</div>
-							<div>
-								<h1 class="text-lg font-semibold text-gray-800">Document Title</h1>
-								<p class="text-sm text-gray-500">Page <span>1 / 12 </span></p>
-							</div>
-						</div>
+		<!-- let main grow with flex-1 -->
+		<main class="flex-1 h-full">
+				<div class="flex w-full h-full">
+					<div class="w-[25%]">
+						preview
 					</div>
 
-					<div class="border-gray-500 mt-auto border-t-4 border-l-4 border-r-4 rounded-tl-2xl rounded-tr-2xl">
-						<div class="p-4">
-							<ul class="text-sm text-gray-700 space-y-2">
-								<li><span class="font-medium">File Name:</span> document_draft.pdf</li>
-								<li><span class="font-medium">Status:</span> In Review</li>
-								<li><span class="font-medium">Last Edited:</span> Sep 15, 2025</li>
-								<li><span class="font-medium">Assigned To:</span> John Doe</li>
-							</ul>
-						</div>
-					</div>
+					<!-- middle canvas -->
+					<div id="columnHolder" class="flex flex-row space-x-5 pt-5 pl-5 h-full w-[50%] bg-secondary rounded-tl-2xl border-primary border-t border-l overflow-y-hidden overflow-x-auto scrollbar">
+						<!-- data comes here -->
+						<div id="col-1" class='w-[25%]  flex flex-col h-full space-y-2 hover:border-2 border-hover rounded-tl-2xl rounded-tr-2xl'>
 
-				</div>
 
-				<!-- right pannel -->
-				<div class="bg-gray-200 h-full flex-1 border-l-4 border-t-4 pl-8 pt-8 border-gray-500 rounded-tl-2xl">
-					<div class="flex flex-row h-full space-x-3">
-						<div id="grid" class="flex flex-row   gap-4">
+							<!-- slot item -->
+							<!-- <div class="flex flex-col items-center justify-center border-1 bg-primary border-pink-300 rounded-xl "> -->
+								<!-- handler -->
+							<!-- 	<div class=" bg-accent-primary accent-primary hover:bg-blue-600 mt-4 mb-2 rounded-full w-[35%] h-8" ></div> -->
+							<!-- 		<div class="flex flex-row w-full h-full justify-center" > -->
+							<!---->
+										<!-- file info  -->
+							<!-- 			<div class="flex-1 max-w-[170px]"> -->
+							<!-- 				<h1 class="text-lg text-primary font-semibold truncate"> -->
+							<!-- 					test-page.pdf -->
+							<!-- 				</h1> -->
+							<!-- 				<p class="text-sm text-secondary truncate"> -->
+							<!-- 					pages 2 • Size 120kb -->
+							<!-- 				</p> -->
+							<!-- 			</div> -->
+							<!---->
+										<!-- option menu -->
+							<!-- 			<div class=" rounded-l flex flex-col justify-center" > -->
+							<!-- 				<svg xmlns="http://www.w3.org/2000/svg"  -->
+							<!-- 					 class="w-8 h-8" viewBox="0 0 24 24" fill="currentColor"> -->
+							<!-- 					<path d="M12 6.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm0 6a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/> -->
+							<!-- 				</svg> -->
+							<!-- 			</div> -->
+							<!-- 		</div> -->
+							<!-- 	<div id="slot-skOPwwC4USfLifff" class="bg-primary w-full h-full"> -->
+							<!-- 		<div> -->
+							<!-- 			fo -->
+							<!-- 		</div> -->
+							<!-- 	</div> -->
+							<!-- </div> -->
+							<!---->
 
-							<!-- column setup -->
-						<div class="p-6 bg-white w-100 rounded-2xl border-1 border-gray-200 shadow text-center cursor-move ">
-							<div class="flex flex-row justify-between">
-								<!-- handle  -->
-									<div class="flex flex-col gap-1 pr-2">
-										<div class="flex gap-1">
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-										</div>
-										<div class="flex gap-1">
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-										</div>
-									</div>
-								
-								<!-- downlod button -->
-									<div class="p-4 border-t border-gray-200 flex flex-row space-x-2">
-										<div>
-											<h1 class="text-lg font-semibold text-gray-800">Document Title</h1>
-											<p class="text-sm text-gray-500">Page <span>1 / 12 </span></p>
-										</div>
-										<div>
-											<img src="../static/icons/download.svg" alt="document icons" class="w-10 h-10 text-amber-300">
-										</div>
-									</div>
 
-								<div>	</div>
-							</div>
-
-							<div class="border-t border-gray-300 w-full h-1"> </div>
-
-							<div class="flex flex-col justify-center space-y-3 ">
-
-								<!-- slots appers here -->
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
+							<div id="slot-skOPwwC4USfLiJN" class="bg-primary rounded-xl w-full h-full">
+								<div class="slothandle">
+									PDF1-page1
 								</div>
-
-
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-
-							</div>
-						</div>
-
-
-
-						<div class="p-6 bg-white w-100 rounded-2xl border-1 border-gray-200 shadow text-center cursor-move ">
-							<div class="flex flex-row justify-between">
-								<!-- handle  -->
-									<div class="flex flex-col gap-1 pr-2">
-										<div class="flex gap-1">
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-										</div>
-										<div class="flex gap-1">
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-										</div>
-									</div>
-								
-								<!-- downlod button -->
-									<div class="p-4 border-t border-gray-200 flex flex-row space-x-2">
-										<div>
-											<h1 class="text-lg font-semibold text-gray-800">Document Title</h1>
-											<p class="text-sm text-gray-500">Page <span>1 / 12 </span></p>
-										</div>
-										<div>
-											<img src="../static/icons/download.svg" alt="document icons" class="w-10 h-10 text-amber-300">
-										</div>
-									</div>
-
-								<div>	</div>
-							</div>
-
-							<div class="border-t border-gray-300 w-full h-1"> </div>
-
-							<div class="flex flex-col justify-center space-y-3 ">
-
-								<!-- slots appers here -->
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-
-							</div>
-						</div>
-
-
-						<div class="p-6 bg-white w-100 rounded-2xl border-1 border-gray-200 shadow text-center cursor-move ">
-							<div class="flex flex-row justify-between">
-								<!-- handle  -->
-									<div class="flex flex-col gap-1 pr-2">
-										<div class="flex gap-1">
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-										</div>
-										<div class="flex gap-1">
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-											<div class="w-1.5 h-1.5 bg-gray-400 rounded"></div>
-										</div>
-									</div>
-								
-								<!-- downlod button -->
-									<div class="p-4 border-t border-gray-200 flex flex-row space-x-2">
-										<div>
-											<h1 class="text-lg font-semibold text-gray-800">Document Title</h1>
-											<p class="text-sm text-gray-500">Page <span>1 / 12 </span></p>
-										</div>
-										<div>
-											<img src="../static/icons/download.svg" alt="document icons" class="w-10 h-10 text-amber-300">
-										</div>
-									</div>
-
-								<div>	</div>
-							</div>
-
-							<div class="border-t border-gray-300 w-full h-1"> </div>
-
-							<div class="flex flex-col justify-center space-y-3 ">
-
-								<!-- slots appers here -->
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-								<div class="w-80 border-4 rounded-2xl overflow-hidden border-gray-600">
-									<img src="../static/assets/previews/P-summary-1.png" 
-										alt="pdf page preview" 
-										class="object-contain w-full h-full"
-									>
-								</div>
-
-							</div>
-						</div>
-
-
-						</div>
-						<script>
-							new Sortable(document.getElementById('grid'), {
-								animation: 150
-							});
-						</script>
-
-						<!-- file upload setup -->
-						<div class="flex flex-row w-100 h-full border-dashed border-2 rounded-2xl justify-center  bg-white">
-							<div class="flex flex-col justify-center">
 								<div>
-									<div class="flex flex-row justify-center">
-										<h1 class="text-2xl font-semibold text-gray-800 mb-3">Upload PDF files</h1>
-									</div>
+									PDF1-page2
+								</div>
+								<div>
+									PDF1-page3
+								</div>
+							</div>
 
-									<form action="/upload" method="post" enctype="multipart/form-data" class="space-y-4">
+							<!-- merge div -->
 
-											<label for="pdfs" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-blue-400 rounded-xl cursor-pointer bg-blue-50 hover:bg-blue-100 transition-colors">
-													<img src="../static/icons/upload.svg" alt="document icons" class="w-10 h-10 text-amber-300">
-													<p class="mt-4 text-xl font-semibold text-gray-700">Click to upload or drag and drop</p>
-													<p class="text-sm text-gray-500">PDF, up to 10MB each</p>
-													<input id="pdfs" name="pdfs" type="file" multiple accept=".pdf" onchange="showFiles()" class="hidden">
-											</label>
+							<div id="slot-skOPwwC4USfLiJN" class="bg-primary rounded-xl w-full h-full">
+								<div>
+									PDF2-page1
+								</div>
+								<div>
+									PDF2-page2
+								</div>
+							</div>
 
-					
-											<div id="fileListContainer" class="space-y-2">
-													<ul id="fileList" class="text-sm text-gray-700"></ul>
-											</div>
+							<div id="slot-skOPwwC4USfLiJN" class="bg-primary rounded-xl w-full h-full">
+								PDF3-page1	
+							</div>
+						</div>
 
-										  <button type="submit" class="w-full bg-blue-800 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-colors shadow-md">
-													Upload Files
-											</button>
+						<div id="col-1" class='w-[25%]  flex flex-col space-y-2 hover:border-2 border-hover rounded-tl-2xl rounded-tr-2xl'>
+
+						</div>
+
+						<div id="col-1" class='w-[25%]  flex flex-col space-y-2 hover:border-2 border-hover rounded-tl-2xl rounded-tr-2xl'>
+
+						</div>
 
 
+
+					</div>
+					<div class="w-[25%] bg-secondary border-t border-primary">
+						<div class="bg-primary h-full rounded-tl-2xl border-primary border-t border-l">
+							info
+						</div>
+					</div>
+				</div>
+		</main>
+		<script>
+				function initSortables() {
+					document.querySelectorAll('[id^="col-"]').forEach(element => {
+						new Sortable(element, {
+							filter: '.filtered',
+							group: 'column',
+							animation: 150,
+							swapThreshold: 0.65,
+							ghostClass: 'opacity-50',
+						});
+					});
+
+					document.querySelectorAll('[id^="slot-"]').forEach(element => {
+						new Sortable(element, {
+							group: 'slot',
+							filter: 'slothandle',
+							animation: 150,
+							swapThreshold: 0.65,
+							ghostClass: 'opacity-40',
+							multiDrag: true,
+							selectedClass: "selected"
+
+							// scroll: true,
+							// forceAutoScrollFallback: false,
+							// scrollFn: function(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) { ... },
+							// scrollSensitivity: 30,
+							// scrollSpeed: 10,
+							// bubbleScroll: true
+
+						});
+					});
+				}
+
+				initSortables();
+		</script>
+
+			<script>
+				function cleanColumn(columnId) {
+					const col = document.getElementById(columnId);
+					if (!col) return;
+
+					const cols = Array.from(holder.querySelectorAll("[id^='col-']"));
+					cols.forEach((col, index) => {
+						const isLast = index === cols.length - 1;
+						const isEmpty =
+							col.children.length === 0 && col.innerText.trim() === "";
+
+						if (isEmpty && !isLast) {
+							col.remove();
+						}
+					});
+
+				const updatedChildren = Array.from(col.children);
+				const last = updatedChildren[updatedChildren.length - 1];
+
+				if (!last || last.children.length > 0 || last.innerText.trim() !== "") {
+						const emptyDiv = document.createElement("div");
+						emptyDiv.className = "w-[25%] bg-gray-400  flex flex-col space-y-2 hover:border-2 border-hover rounded-tl-2xl rounded-tr-2xl";
+						emptyDiv.id="col-empty"
+						col.appendChild(emptyDiv);
+				}
+				}
+
+				function mergeSections() {
+					const mergeDiv = event.currentTarget.parentElement;
+					const prevSlot = mergeDiv.previousElementSibling;
+					const nextSlot = mergeDiv.nextElementSibling;
+					if (!prevSlot?.id.startsWith("slot-") || !nextSlot?.id.startsWith("slot-")) return;
+						prevSlot.innerHTML += nextSlot.innerHTML;
+						nextSlot.remove();
+						mergeDiv.remove();
+				}
+
+				function updateMergeDivs() {
+					observer.disconnect();
+
+					document.querySelectorAll("[id^='col-']").forEach(col => {
+						cleanColumn(col);
+
+						col.querySelectorAll(".filtered").forEach(el => el.remove());
+
+						const slots = Array.from(col.querySelectorAll("[id^='slot-']"));
+						if (slots.length < 2) return;
+
+						for (let i = 0; i < slots.length - 1; i++) {
+							const mergeDiv = document.createElement("div");
+							mergeDiv.className = "filtered flex items-center justify-between px-2 py-1";
+							mergeDiv.id = "optionMenu";
+							mergeDiv.style.transition = "opacity 0.3s";
+
+            mergeDiv.innerHTML = `
+							<button 
+								class="px-3 py-1 rounded-lg text-gray-50 button-primary button-primary-hover"
+								onclick="mergeSections()">
+								Merge
+							</button>
+							<button 
+								class="px-3 py-1 rounded-lg bg-gray-300 text-primary hover:bg-gray-400"
+								onclick="this.parentElement.style.display='none'">
+								Dismiss
+							</button>
+            `;
+            // slots[i].insertAdjacentElement("afterend", mergeDiv);
+						slots[i].parentElement.insertBefore(mergeDiv, slots[i].nextSibling);
+
+						}
+					});
+				observeColumns();
+			}
+
+			function observeColumns() {
+				document.querySelectorAll("[id^='col-']").forEach(col => {
+						observer.observe(col, { childList: true });
+				});
+			}
+
+			const observer = new MutationObserver(updateMergeDivs);
+			updateMergeDivs();
+
+			</script>
+
+
+		<footer class="flex flex-row justify-end">
+			<p class="bg-primary text-secondary text-xs pr-1">
+				All rights reserved. &copy; 2025
+			</p>
+		</footer>
+	</div>
 
 	<script>
 		const evtSource = new EventSource("http://localhost:8080/events");
@@ -312,6 +260,5 @@
       updatesDiv.insertAdjacentHTML("beforeend", "<p style='color:red;'>Connection lost...</p>");
     };
   </script>
-		
-  </body>
+</body>
 </html>
