@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/gen2brain/go-fitz"
+	"github.com/pdfcpu/pdfcpu/pkg/api"
 )
 
 //go:embed components/*
@@ -200,6 +201,50 @@ type PDFMeta struct {
 	Pages            []PageMeta `json:"pages"`
 }
 
+func extractPDFMeta(pdfPath, filename string) (PDFMeta, error) {
+	ctx, err := api.ReadContextFile(pdfPath)
+	if err != nil {
+		return PDFMeta{}, err
+	}
+
+	meta := PDFMeta{
+		Filename:  filename,
+		Version:   ctx.HeaderVersion.String(), 
+		PageCount: ctx.PageCount,
+	}
+
+	if dims, err := ctx.PageDims(); err == nil && len(dims) > 0 {
+		d := dims[0]
+		meta.PageSize = fmt.Sprintf("%.2f x %.2f points", d.Width, d.Height)
+	}
+
+	if ctx.Title != "" {
+		meta.Title = ctx.Title
+	}
+	if ctx.Author != "" {
+		meta.Author = ctx.Author
+	}
+	if ctx.Subject != "" {
+		meta.Subject = ctx.Subject
+	}
+	if ctx.Producer != "" {
+		meta.Producer = ctx.Producer
+	}
+	if ctx.Creator != "" {
+		meta.Creator = ctx.Creator
+	}
+
+	fmt.Printf("Context type: %T\n", ctx)
+	if ctx.Info != nil {
+		fmt.Printf("Info type: %T, value: %+v\n", ctx.Info, ctx.Info)
+	}
+
+	if ctx.ModDate != "" {
+		meta.ModificationDate = ctx.ModDate
+	}
+
+	return meta, nil
+}
 func detectOrientation(width, height int) string {
 	if width > height {
 		return "landscape"
