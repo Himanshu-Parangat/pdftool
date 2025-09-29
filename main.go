@@ -307,6 +307,24 @@ func generatePreviews(pdfPath, filename string) (PDFMeta, error) {
 }
 
 
+func updatePagesJSON(meta PDFMeta) error {
+	jsonFile := "./artifacts/pages.json"
+	allPDFs := make(map[string]PDFMeta)
+
+	if data, err := os.ReadFile(jsonFile); err == nil {
+		_ = json.Unmarshal(data, &allPDFs)
+	}
+
+	allPDFs[meta.Filename] = meta
+
+	data, err := json.MarshalIndent(allPDFs, "", "  ")
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(jsonFile, data, 0644)
+}
+
+
 
 func pdfUpload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -374,6 +392,12 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("generatePreviews error: %v", err)
 			http.Error(w, fmt.Sprintf("Error generating previews: %v", err), http.StatusInternalServerError)
+			return
+		}
+
+		if err := updatePagesJSON(meta); err != nil {
+			log.Printf("updatePagesJSON error: %v", err)
+			http.Error(w, fmt.Sprintf("Error updating pages.json: %v", err), http.StatusInternalServerError)
 			return
 		}
 
