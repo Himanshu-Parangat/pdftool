@@ -113,12 +113,69 @@
 
 					</div>
 					<div class="w-[25%] bg-secondary border-t border-primary">
-						<div class="bg-primary h-full rounded-tl-2xl border-primary border-t border-l">
-							info
+						<div class="bg-primary flex flex-row justify-center h-full w-full rounded-tl-l border-primary border-t border-l">
+							<div class="flex flex-col justify-center h-full w-full ml-[15%] mr-[15%]">
+								<h1 class="text-2xl font-semibold">Upload PDF files</h1>
+
+								<form action="/upload" method="post" enctype="multipart/form-data" class="space-y-4">
+
+										<label for="pdfs" class="flex flex-col items-center justify-center w-full h-50 border-2 border-dashed border-blue-400 rounded-xl cursor-pointer bg-secondary hover:bg-blue-100 transition-colors">
+												<img src="../static/icons/upload.svg" alt="document icons" class="w-10 h-10">
+												<p class="mt-4 text-xl font-semibold text-secondary">Click to upload or drag and drop</p>
+												<p class="text-sm text-tertiary">Only PDF files are processed</p>
+												<input id="pdfs" name="pdfs" type="file" multiple accept=".pdf" onchange="showFiles()" class="hidden">
+										</label>
+
+
+										<div id="fileListContainer" class="space-y-2">
+												<ol id="fileList" class="text-sm text-primary"></ol>
+										</div>
+
+										<button type="submit" class="w-full  rounded-lg text-gray-50 button-primary button-primary-hover font-semibold py-3 transition-colors shadow-md">
+												Upload Files
+										</button>
+
+								</form>
+							</div>
+
+							
 						</div>
 					</div>
 				</div>
 		</main>
+
+	<script>
+	 function showFiles() {
+		 const input = document.getElementById("pdfs");
+		 const list = document.getElementById("fileList");
+		 list.innerHTML = "";
+		 for (let file of input.files) {
+						 let li = document.createElement("li");
+						 li.textContent = file.name;
+						 list.appendChild(li);
+		 }
+	 }
+	</script>
+
+	<script>
+    const list = document.getElementById('items');
+    const output = document.getElementById('orderOutput');
+
+    function updateOrder() {
+      const order = Array.from(list.children).map(li => li.dataset.id);
+      output.textContent = "Current order: " + JSON.stringify(order);
+    }
+
+    new Sortable(list, {
+      animation: 150,
+      ghostClass: 'bg-blue-100',
+      onEnd: updateOrder
+    });
+
+    // initialize
+    updateOrder();
+  </script>
+
 		<script>
 				function initSortables() {
 					document.querySelectorAll('[id^="col-"]').forEach(element => {
