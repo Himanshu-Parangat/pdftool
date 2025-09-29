@@ -3,7 +3,9 @@ package main
 import (
 	"crypto/rand"
 	"embed"
+	"encoding/json"
 	"fmt"
+	"image/png"
 	"io"
 	"io/fs"
 	"log"
@@ -13,6 +15,8 @@ import (
 	"sync"
 	"text/template"
 	"time"
+
+	"github.com/gen2brain/go-fitz"
 )
 
 //go:embed components/*
@@ -203,6 +207,61 @@ func detectOrientation(width, height int) string {
 	return "portrait"
 }
 
+func generatePreviews(pdfPath, filename string) (PDFMeta, error) {
+	doc, err := fitz.New(pdfPath)
+	if err != nil {
+		return PDFMeta{}, fmt.Errorf("fitz open: %w", err)
+	}
+	defer doc.Close()
+
+	pdfMeta, err := extractPDFMeta(pdfPath, filename)
+	if err != nil {
+		return PDFMeta{}, fmt.Errorf("pdfcpu metadata: %w", err)
+	}
+
+	for i := 0; i < doc.NumPage(); i++ {
+		img, err := doc.Image(i)
+		if err != nil {
+			return PDFMeta{}, fmt.Errorf("render page %d: %w", i+1, err)
+		}
+
+		pageID, err := NanoID(15)
+		if err != nil {
+			return PDFMeta{}, fmt.Errorf("generate id: %w", err)
+		}
+		previewPath := filepath.Join("artifacts", "previews", pageID+".png")
+
+		f, err := os.Create(previewPath)
+		if err != nil {
+			return PDFMeta{}, fmt.Errorf("create preview file: %w", err)
+		}
+		if err := png.Encode(f, img); err != nil {
+			f.Close()
+			return PDFMeta{}, fmt.Errorf("encode png: %w", err)
+		}
+		if err := f.Close(); err != nil {
+			return PDFMeta{}, fmt.Errorf("close preview file: %w", err)
+		}
+
+		orientation := detectOrientation(img.Bounds().Dx(), img.Bounds().Dy())
+
+		p := PageMeta{
+			ID:              pageID,
+			PageNumber:      i + 1,
+			PageOrientation: orientation,
+			Flip:            0,
+			Rotate:          0,
+			Status:          "show",
+			PreviewPath:     filepath.ToSlash(previewPath),
+		}
+
+		pdfMeta.Pages = append(pdfMeta.Pages, p)
+	}
+
+	return pdfMeta, nil
+}
+
+
 
 func pdfUpload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -263,6 +322,13 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 		_, err = io.Copy(out, file)
 		if err != nil {
 			http.Error(w, "Error saving file", http.StatusInternalServerError)
+			return
+		}
+
+		meta, err := generatePreviews(destinationPath, fileName)
+		if err != nil {
+			log.Printf("generatePreviews error: %v", err)
+			http.Error(w, fmt.Sprintf("Error generating previews: %v", err), http.StatusInternalServerError)
 			return
 		}
 
