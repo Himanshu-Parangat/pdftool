@@ -171,6 +171,13 @@ func sethtml()  {
 }
 
 
+func detectOrientation(width, height int) string {
+	if width > height {
+		return "landscape"
+	}
+	return "portrait"
+}
+
 
 func pdfUpload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
