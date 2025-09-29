@@ -171,6 +171,31 @@ func sethtml()  {
 }
 
 
+type PageMeta struct {
+	ID              string `json:"id"`
+	PageNumber      int    `json:"pagenumber"`
+	PageOrientation string `json:"pageorientation"`
+	Flip            int    `json:"flip"`
+	Rotate          int    `json:"rotate"`
+	Status          string `json:"status"`
+	PreviewPath     string `json:"preview_path"`
+}
+
+type PDFMeta struct {
+	Filename         string     `json:"filename"`
+	Version          string     `json:"version"`
+	PageCount        int        `json:"page_count"`
+	PageSize         string     `json:"page_size"`
+	Title            string     `json:"title"`
+	Author           string     `json:"author"`
+	Subject          string     `json:"subject"`
+	Producer         string     `json:"producer"`
+	Creator          string     `json:"creator"`
+	CreationDate     string     `json:"creation_date"`
+	ModificationDate string     `json:"modification_date"`
+	Pages            []PageMeta `json:"pages"`
+}
+
 func detectOrientation(width, height int) string {
 	if width > height {
 		return "landscape"
