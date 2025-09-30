@@ -42,19 +42,19 @@ func GetServerAddress() string {
 	return fmt.Sprintf("%s:%s", host, port)
 }
 
-func ensureDirs() {
-	dirs := []string{
-		"./artifacts",
-		"./artifacts/uploads",
-		"./artifacts/chuncks",
-		"./artifacts/previews",
-	}
+func ensureDirs(session_id string) (string, string, string, error) {
+	sessionDir := filepath.Join("artifacts", session_id)
+	sessionUploadsDir := filepath.Join(sessionDir, "uploads")
+	sessionPreviewsDir := filepath.Join(sessionDir, "previews")
+
+	dirs := []string{sessionDir, sessionUploadsDir, sessionPreviewsDir}
 
 	for _, dir := range dirs {
 		if err := os.MkdirAll(dir, 0755); err != nil {
-			log.Fatalf("Failed to create directory %s: %v", dir, err)
+			return "", "", "", fmt.Errorf("failed to create directory %s: %w", dir, err)
 		}
 	}
+	return sessionDir, sessionUploadsDir, sessionPreviewsDir, nil
 }
 
 const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -426,7 +426,6 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 
 
 func main() {
-	ensureDirs()
 	sethtml()
 	http.HandleFunc("/", dashboard)
 	http.HandleFunc("/dashboard", oldDashboard)
