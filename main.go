@@ -324,6 +324,23 @@ func updatePagesJSON(meta PDFMeta) error {
 	return os.WriteFile(jsonFile, data, 0644)
 }
 
+func generateCookie(w http.ResponseWriter, r *http.Request) string {
+	cookie, err := r.Cookie("session_id")
+	if err == nil {
+		return cookie.Value
+	}
+
+	id, _ := NanoID(15)
+	cookie = &http.Cookie{
+		Name:     "session_id",
+		Value:    id,
+		Path:     "/",
+		HttpOnly: false,
+		Expires:  time.Now().Add(24 * time.Hour),
+	}
+	http.SetCookie(w, cookie)
+	return id
+}
 
 
 func pdfUpload(w http.ResponseWriter, r *http.Request) {
