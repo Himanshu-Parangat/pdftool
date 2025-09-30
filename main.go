@@ -252,7 +252,7 @@ func detectOrientation(width, height int) string {
 	return "portrait"
 }
 
-func generatePreviews(pdfPath, filename string) (PDFMeta, error) {
+func generatePreviews(pdfPath, filename, sessionPreviewsDir string) (PDFMeta, error) {
 	doc, err := fitz.New(pdfPath)
 	if err != nil {
 		return PDFMeta{}, fmt.Errorf("fitz open: %w", err)
@@ -274,7 +274,8 @@ func generatePreviews(pdfPath, filename string) (PDFMeta, error) {
 		if err != nil {
 			return PDFMeta{}, fmt.Errorf("generate id: %w", err)
 		}
-		previewPath := filepath.Join("artifacts", "previews", pageID+".png")
+
+		previewPath := filepath.Join(sessionPreviewsDir, pageID+".png")
 
 		f, err := os.Create(previewPath)
 		if err != nil {
@@ -307,8 +308,8 @@ func generatePreviews(pdfPath, filename string) (PDFMeta, error) {
 }
 
 
-func updatePagesJSON(meta PDFMeta) error {
-	jsonFile := "./artifacts/pages.json"
+func updatePagesJSON(meta PDFMeta, sessionID string,sessionDir string) error {
+	jsonFile := filepath.Join(sessionDir, sessionID+"_store.json")
 	allPDFs := make(map[string]PDFMeta)
 
 	if data, err := os.ReadFile(jsonFile); err == nil {
@@ -349,6 +350,14 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	sessionID := generateCookie(w,r)
+
+	sessionDir , sessionUploadsDir, sessionPreviewsDir, err := ensureDirs(sessionID)
+	if err != nil {
+		http.Error(w, "Unable to create session directories", http.StatusInternalServerError)
+		return
+	}
+
 	if err := r.ParseMultipartForm(32 << 20); err != nil {
 		http.Error(w, "Error parsing form", http.StatusBadRequest)
 		return
@@ -385,7 +394,7 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 			}
 
 			fileName = id + "_" + safeName
-			destinationPath = filepath.Join("./artifacts/uploads/", fileName)
+			destinationPath = filepath.Join(sessionUploadsDir, fileName)
 
 			if _, err := os.Stat(destinationPath); os.IsNotExist(err) {
 				break 
@@ -405,14 +414,14 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		meta, err := generatePreviews(destinationPath, fileName)
+		meta, err := generatePreviews(destinationPath, fileName, sessionPreviewsDir)
 		if err != nil {
 			log.Printf("generatePreviews error: %v", err)
 			http.Error(w, fmt.Sprintf("Error generating previews: %v", err), http.StatusInternalServerError)
 			return
 		}
 
-		if err := updatePagesJSON(meta); err != nil {
+		if err := updatePagesJSON(meta, sessionID, sessionDir); err != nil {
 			log.Printf("updatePagesJSON error: %v", err)
 			http.Error(w, fmt.Sprintf("Error updating pages.json: %v", err), http.StatusInternalServerError)
 			return
