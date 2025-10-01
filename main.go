@@ -432,8 +432,6 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 }
 
 
-
-
 func main() {
 	sethtml()
 	http.HandleFunc("/", dashboard)
@@ -446,12 +444,9 @@ func main() {
 	staticFS, _ := fs.Sub(staticFiles, "static")
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
 
+	http.Handle("/artifacts/", http.StripPrefix("/artifacts/", http.FileServer(http.Dir("./artifacts"))))
 
 	address := GetServerAddress()
 	log.Println("\n\nServer is running on http://" + address)
 	log.Fatal(http.ListenAndServe(address, nil))
 }
-
-
-
-
