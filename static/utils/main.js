@@ -28,22 +28,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Server side event setup
 
-const evtSource = new EventSource("http://localhost:8080/events");
-const updatesDiv = document.getElementById("columnHolder");
-
-evtSource.onmessage = function(event) {
-	updatesDiv.insertAdjacentHTML("beforeend", event.data);
-};
-
-evtSource.onerror = function() {
-	updatesDiv.insertAdjacentHTML("beforeend", "<p style='color:red;'>Connection lost...</p>");
-
-};
-
 
 
 
 // File upload list genrator
+
+document.addEventListener("DOMContentLoaded", () => {
+  const uploadStatus = document.getElementById("uploadStatus");
+  const placeholder = document.getElementById("finleTrackPlacehoder");
+
+  function togglePlaceholder() {
+    const items = uploadStatus.querySelectorAll("li:not(#finleTrackPlacehoder)");
+    placeholder.style.display = items.length === 0 ? "flex" : "none";
+  }
+
+  togglePlaceholder();
+  const observer = new MutationObserver(togglePlaceholder);
+  observer.observe(uploadStatus, { childList: true });
+});
+
 
 function showFiles() {
  const input = document.getElementById("pdfs");
