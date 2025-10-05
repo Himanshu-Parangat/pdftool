@@ -253,6 +253,50 @@ func generatePreviews(pdfPath, filename, sessionPreviewsDir string) (PDFMeta, er
 	return pdfMeta, nil
 }
 
+func streamPagesJSON(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "text/event-stream")
+    w.Header().Set("Cache-Control", "no-cache")
+    w.Header().Set("Connection", "keep-alive")
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+
+    flusher, ok := w.(http.Flusher)
+    if !ok {
+        http.Error(w, "Streaming unsupported", http.StatusInternalServerError)
+        return
+    }
+
+    sessionID := generateCookie(w, r)
+    sessionDir := filepath.Join("artifacts", sessionID)
+
+    lastSent := ""
+
+		for {
+				jsonFile := filepath.Join(sessionDir, sessionID+"_store.json")
+
+				data, err := os.ReadFile(jsonFile)
+				if err == nil {
+						// recompact JSON to single line
+						var tmp map[string]any
+						if json.Unmarshal(data, &tmp) == nil {
+								compactData, _ := json.Marshal(tmp)
+								jsonStr := string(compactData)
+
+								if jsonStr != "" && jsonStr != lastSent {
+										fmt.Fprintf(w, "data: %s\n\n", jsonStr)
+										flusher.Flush()
+										lastSent = jsonStr
+								}
+						}
+				}
+
+				if r.Context().Err() != nil {
+						return
+				}
+				time.Sleep(1 * time.Second)
+		}
+}
+
+
 
 func updatePagesJSON(meta PDFMeta, sessionID string,sessionDir string) error {
 	jsonFile := filepath.Join(sessionDir, sessionID+"_store.json")
@@ -373,7 +417,24 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Fprintf(w, "Saved as %s\n", fileName)
+		var fileid string = fileName[:15]
+		var fileDisplayName string = ""
+
+		if len(fileName) > 16 {
+				fileDisplayName = fileName[16:]
+		} else if len(fileName) > 15 {
+			fileDisplayName = "File_" + fileName[6:]
+		}
+
+		
+		data := fmt.Sprintf(`<li id="%s" class="flex items-center rounded-l bg-secondary hover:border-2 hover:border-primary pl-3" style="display: list-item;">
+				<div class="inline-flex flex-row justify-between p-2 rounded-xl w-[calc(100%%-2rem)]">
+					<div>%s</div>
+			<div class="rounded-full pl-1 pr-1 ml-2 hover:text-red-500" onclick="this.closest('li').remove()">&times;</div>
+				</div>
+			</li>`, fileid, fileDisplayName)
+
+		 fmt.Fprintf(w,data)
 	}
 }
 
@@ -381,7 +442,7 @@ func pdfUpload(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", dashboard)
 	http.HandleFunc("/dashboard", oldDashboard)
-	http.HandleFunc("/events", counterSSE)
+	http.HandleFunc("/events", streamPagesJSON)
 	http.HandleFunc("/upload", pdfUpload)
 	http.HandleFunc("/id", getNanoID)
 
