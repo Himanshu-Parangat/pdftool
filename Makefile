@@ -143,7 +143,7 @@ run: build
 
 dev: 
 	@printf "$(Purple)[Dev]$(Cyan) Starting live-reload server with reflex...$(Reset)\n"
-	@$(REFLEX) -r '(\.go$$|\.html$$|\.css$$)' -s -- sh -c "go run ."
+	@$(REFLEX) -r '(\.go$$|\.html$$|\.js$$|\.css$$)' -s -- sh -c "go run ."
 
 
 clean:
