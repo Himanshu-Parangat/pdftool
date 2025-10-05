@@ -57,87 +57,82 @@ function showFiles() {
 }
 
 
-function cleanColumn(columnId) {
-	const col = document.getElementById(columnId);
-	if (!col) return;
 
-	const cols = Array.from(holder.querySelectorAll("[id^='col-']"));
-	cols.forEach((col, index) => {
-		const isLast = index === cols.length - 1;
-		const isEmpty =
-			col.children.length === 0 && col.innerText.trim() === "";
 
-		if (isEmpty && !isLast) {
-			col.remove();
-		}
-	});
 
-const updatedChildren = Array.from(col.children);
-const last = updatedChildren[updatedChildren.length - 1];
-
-if (!last || last.children.length > 0 || last.innerText.trim() !== "") {
-		const emptyDiv = document.createElement("div");
-		emptyDiv.className = "w-[25%] bg-gray-400  flex flex-col space-y-2 hover:border-2 border-hover rounded-tl-2xl rounded-tr-2xl";
-		emptyDiv.id="col-empty"
-		col.appendChild(emptyDiv);
-}
+function getAllColumns(id = "columnHolder") {
+  const container = document.getElementById(id);
+  if (!container) return [];
+  return Array.from(container.querySelectorAll('[id^="column-"]'));
 }
 
-function mergeSections() {
-	const mergeDiv = event.currentTarget.parentElement;
-	const prevSlot = mergeDiv.previousElementSibling;
-	const nextSlot = mergeDiv.nextElementSibling;
-	if (!prevSlot?.id.startsWith("slot-") || !nextSlot?.id.startsWith("slot-")) return;
-		prevSlot.innerHTML += nextSlot.innerHTML;
-		nextSlot.remove();
-		mergeDiv.remove();
+function getAllFiles(column) {
+  return Array.from(column.querySelectorAll('[id^="files-"]'));
 }
 
-function updateMergeDivs() {
-	observer.disconnect();
-
-	document.querySelectorAll("[id^='col-']").forEach(col => {
-		cleanColumn(col);
-
-		col.querySelectorAll(".filtered").forEach(el => el.remove());
-
-		const slots = Array.from(col.querySelectorAll("[id^='slot-']"));
-		if (slots.length < 2) return;
-
-		for (let i = 0; i < slots.length - 1; i++) {
-			const mergeDiv = document.createElement("div");
-			mergeDiv.className = "filtered flex items-center justify-between px-2 py-1";
-			mergeDiv.id = "optionMenu";
-			mergeDiv.style.transition = "opacity 0.3s";
-
-		mergeDiv.innerHTML = `
-			<button 
-				class="px-3 py-1 rounded-lg text-gray-50 button-primary button-primary-hover"
-				onclick="mergeSections()">
-				Merge
-			</button>
-			<button 
-				class="px-3 py-1 rounded-lg bg-gray-300 text-primary hover:bg-gray-400"
-				onclick="this.parentElement.style.display='none'">
-				Dismiss
-			</button>
-		`;
-		// slots[i].insertAdjacentElement("afterend", mergeDiv);
-		slots[i].parentElement.insertBefore(mergeDiv, slots[i].nextSibling);
-
-		}
-	});
-observeColumns();
+function getAllPages(file) {
+  return Array.from(file.querySelectorAll('[id^="page-"]'));
 }
 
-function observeColumns() {
-document.querySelectorAll("[id^='col-']").forEach(col => {
-		observer.observe(col, { childList: true });
-});
+function getCurrentPlacement() {
+  const columns = getAllColumns();
+  const structure = {};
+
+  columns.forEach(column => {
+    const columnId = column.dataset.id || column.id;
+    structure[columnId] = {};
+
+    const files = getAllFiles(column);
+    files.forEach(file => {
+      const filename = file.dataset.filename || file.id;
+      const fileMeta = {
+        author: file.dataset.author || "",
+        creation_date: file.dataset.creationDate || "",
+        creator: file.dataset.creator || "",
+        filename,
+        modification_date: file.dataset.modificationDate || "",
+        page_count: Number(file.dataset.pageCount) || 0,
+        page_size: file.dataset.pageSize || "",
+        pages: [],
+        producer: file.dataset.producer || "",
+        subject: file.dataset.subject || "",
+        title: file.dataset.title || "",
+        version: file.dataset.version || ""
+      };
+
+      const pages = getAllPages(file);
+      fileMeta.page_count = pages.length;
+
+      pages.forEach((page, i) => {
+        const pageData = {
+          flip: Number(page.dataset.flip) || 0,
+          id: page.dataset.id || `page-${i}`,
+          pagenumber: Number(page.dataset.pageNumber) || i + 1,
+          pageorientation: page.dataset.pageOrientation || "portrait",
+          preview_path: page.dataset.previewPath || "",
+          rotate: Number(page.dataset.rotate) || 0,
+          status: page.dataset.status || "show"
+        };
+        fileMeta.pages.push(pageData);
+      });
+
+      structure[columnId][filename] = fileMeta;
+    });
+  });
+
+  // console.log(structure);
+	showJson(structure)
+  // return structure;
 }
 
-const observer = new MutationObserver(updateMergeDivs);
-updateMergeDivs();
+
+function showJson(jsonData) {
+  const viewer = document.getElementById("jsonViewer");
+  if (!viewer) return;
+
+  viewer.textContent = JSON.stringify(jsonData, null, 2);
+}
+
 
 
 
