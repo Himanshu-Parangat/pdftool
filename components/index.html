@@ -196,7 +196,29 @@
 								</div>
 										</button>
 
-								</form>
+
+								<!-- File Queue  -->
+								<div class="w-full h-full  bg-primary pr-4 pl-4 rounded-md">
+
+										<h2 class="text-3xl pl-3 pt-3 font-medium text-primary">File List</h2>
+										<ol id="uploadStatus" class="list-decimal list-inside mt-4 space-y-2 h-full">
+
+											<!-- Place holder element -->
+											<li id="finleTrackPlacehoder" class="flex items-center rounded-l w-full bg-secondary border-dashed border-1 border-primary hover:border-2 hover:border-primary pl-3 mb-1" >
+												<div class="inline-flex flex-row justify-between p-2 rounded-xl w-[calc(100%-2rem)]">
+													<div class="mr-2 ml-2"> No file in Queue</div>
+												</div>
+											</li>
+
+											<!-- via htmx -->
+											<!-- <li class="flex items-center rounded-l w-full bg-secondary hover:border-2 hover:border-primary pl-3" style="display: list-item;"> -->
+											<!-- 	<div class="inline-flex flex-row justify-between p-2 rounded-xl w-[calc(100%-2rem)]"> -->
+											<!-- 		<div class="mr-2 ml-2">name</div> -->
+											<!-- 		<div class="rounded-full pl-1 pr-1" onclick="this.closest('li').remove()">&times;</div> -->
+											<!-- 	</div> -->
+											<!-- </li> -->
+										</ol>
+								</div>
 							</div>
 
 							
