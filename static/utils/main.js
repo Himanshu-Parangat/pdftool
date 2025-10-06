@@ -26,6 +26,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+function createFileColumnsFromJSON(data) {
+    const holder = document.getElementById('columnHolder');
+    if (!holder) return;
+
+    Object.entries(data).forEach(([filename, fileData]) => {
+        const fileId = filename.slice(0, 15);
+        const fileDisplayName = filename.slice(16);
+
+        const columnDiv = document.createElement('div');
+        columnDiv.id = `column-${fileId}`;
+        columnDiv.className = 'min-w-[20%] flex flex-col  border-1 border-dotted hover:border-2 border-hover rounded-tl-2xl rounded-tr-2xl space-y-3 text-center';
+        columnDiv.dataset.id = fileId;
+        columnDiv.dataset.fileCount = fileData.page_count || 0;
+
+        const fileDiv = document.createElement('div');
+        fileDiv.id = `files-${fileId}`;
+        fileDiv.className = 'bg-primary p-1 rounded-t-2xl';
+        Object.assign(fileDiv.dataset, {
+            id: fileId,
+            filename: fileData.filename || '',
+            author: fileData.author || '',
+            creationDate: fileData.creation_date || '',
+            creator: fileData.creator || '',
+            modificationDate: fileData.modification_date || '',
+            pageCount: fileData.page_count || '',
+            pageSize: fileData.page_size || '',
+            producer: fileData.producer || '',
+            subject: fileData.subject || '',
+            title: fileData.title || '',
+            version: fileData.version || '',
+        });
+
+        const infoDiv = document.createElement('div');
+        infoDiv.textContent = fileDisplayName;
+				infoDiv.className = "truncate text-sm pl-2 pr-2 border-b-1 pb-2"
+        fileDiv.appendChild(infoDiv);
+
+        const pageHolder = document.createElement('div');
+        pageHolder.id = `pageHolder-${fileId}`;
+        pageHolder.className = 'm-2 space-y-3 overflow-y-auto';
+
+        (fileData.pages || []).forEach(page => {
+            const pageDiv = document.createElement('div');
+            pageDiv.id = `page-${page.id}`;
+            pageDiv.className = 'border-1 border-primary rounded-xl flex flex-row justify-center overflow-hidden';
+            Object.assign(pageDiv.dataset, {
+                pageNumber: page.pagenumber || '',
+                flip: page.flip || '',
+                id: page.id || '',
+                pageOrientation: page.pageorientation || '',
+                previewPath: page.preview_path || '',
+                rotate: page.rotate || '',
+                status: page.status || '',
+            });
+
+            const img = document.createElement('img');
+            img.src = page.preview_path || '';
+            img.alt = `preview page ${page.pagenumber || ''}`;
+            img.className = 'max-h-75 object-contain';
+
+            pageDiv.appendChild(img);
+            pageHolder.appendChild(pageDiv);
+        });
+
+        fileDiv.appendChild(pageHolder);
+        columnDiv.appendChild(fileDiv);
+
+        holder.prepend(columnDiv);
+    });
+
+    initSortables();
+}
+
+
 // Server side event setup
 
 
