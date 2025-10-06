@@ -140,37 +140,32 @@ function showJson(jsonData) {
 
 
 
-function initSortables() {
-	document.querySelectorAll('[id^="col-"]').forEach(element => {
-		new Sortable(element, {
-			filter: '.filtered',
-			group: 'column',
-			animation: 150,
-			swapThreshold: 0.65,
-			ghostClass: 'opacity-50',
-		});
-	});
 
-	document.querySelectorAll('[id^="slot-"]').forEach(element => {
+function initSortables() {
+	document.querySelectorAll('[id^="pageHolder-"]').forEach(element => {
 		new Sortable(element, {
-			group: 'slot',
-			filter: 'slothandle',
-			animation: 150,
+			group: 'page',
+			delay: 0,
+			animation: 0,
 			swapThreshold: 0.65,
 			ghostClass: 'opacity-40',
-			multiDrag: true,
-			selectedClass: "selected"
-
-			// scroll: true,
-			// forceAutoScrollFallback: false,
-			// scrollFn: function(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) { ... },
-			// scrollSensitivity: 30,
-			// scrollSpeed: 10,
-			// bubbleScroll: true
-
+			selectedClass: "selectedPage",
+		  forceFallback: true,
+			onEnd: () => columncallback()
+		});
+	});
+	document.querySelectorAll('[id^="column-"]').forEach(element => {
+		new Sortable(element, {
+			group: 'section',
+			delay: 0,
+			animation: 0,
+			swapThreshold: 0.65,
+			ghostClass: 'opacity-40',
+			selectedClass: "selectedFile",
+		  forceFallback: true,
+			onEnd: () => columncallback()
 		});
 	});
 }
 
 initSortables();
-
