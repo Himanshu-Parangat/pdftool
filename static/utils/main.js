@@ -101,6 +101,21 @@ function createFileColumnsFromJSON(data) {
 
 
 // Server side event setup
+const evtSource = new EventSource("/events");
+
+evtSource.onmessage = (event) => {
+  try {
+    const jsonData = JSON.parse(event.data);
+    console.log("Received JSON:", jsonData);
+    createFileColumnsFromJSON(jsonData);
+  } catch (e) {
+    console.error("Invalid JSON from SSE:", e);
+  }
+};
+
+evtSource.onerror = (err) => {
+  console.error("SSE connection error:", err);
+};
 
 
 
@@ -213,6 +228,11 @@ function showJson(jsonData) {
 
 
 
+
+function columncallback() {
+		getCurrentPlacement()
+	
+}
 
 
 function initSortables() {
