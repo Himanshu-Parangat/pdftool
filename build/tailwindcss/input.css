@@ -48,9 +48,22 @@
 }
 
 
-.scrollbar {
-  scrollbar-width: thin;              /* auto | thin | none */
-  scrollbar-color: var(--color-text-primary) var(--color-bg-secondary);      /* thumb | track */
+.preview-small {
+  --preview-width: 100px;
+}
+.preview-medium {
+  --preview-width: 150px;
+}
+.preview-large {
+  --preview-width: 200px;
+}
+.preview-extralarge {
+  --preview-width: 250px;
+}
+
+.preview-size {
+  width: var(--preview-width);
+	transition: width 0.2s ease;
 }
 
 ::-webkit-scrollbar {

@@ -25,6 +25,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+const previewSizeClasses = ['preview-small', 'preview-medium', 'preview-large', 'preview-extralarge'];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const select = document.getElementById('preview-size');
+  const previews = document.getElementById('columnHolder');
+  if (!select || !previews) return;
+
+  const savedPreviewSize = localStorage.getItem('previewSize') || 'preview-medium';
+
+  // Apply saved size to main container
+  previews.classList.remove(...previewSizeClasses);
+  previews.classList.add(savedPreviewSize);
+  select.value = savedPreviewSize;
+
+  select.addEventListener('change', function () {
+    const selectedValue = select.value;
+
+    previews.classList.remove(...previewSizeClasses);
+    previews.classList.add(selectedValue);
+
+    localStorage.setItem('previewSize', selectedValue);
+  });
+});
 
 function createFileColumnsFromJSON(data) {
     const holder = document.getElementById('columnHolder');
