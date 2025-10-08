@@ -52,40 +52,40 @@
 
 				<!-- left section in layout -->
 				<div id="layout-prevew" class="w-[25%] overflow-auto flex-shrink-0 scrolling-modefy">
-						<!-- Right panel section -->
-						<div class="bg-primary  flex flex-row justify-center  w-full h-full rounded-tl-l border-primary border-t border-l">
+						<div class=" rounded-lg overflow-hidden mb-2 m-2">
+							<div class="aspect-[3/4] flex items-center justify-center">
+									<!-- src="static/assets/previews/P-summary.png"  -->
+								<img 
+									src="static/assets/previews/P-summary-1.png" 
+									alt="Document Preview" 
+									class="w-full h-full object-contain"
+								/>
+							</div>
+						</div>
 
+					  <h2 class="text-lg px-4 pt-1 font-semibold mb-5 text-primary">Document Info</h2>
+						<div class="px-4 space-y-2 text-sm">
+							<div class="flex items-start space-x-1">
+									<span class="text-secondary font-medium w-20 flex-shrink-0">File:</span>
+									<span class="text-primary break-all">F3XdvoMbzRGlmGt_exels-sheet.pdf</span>
+							</div>
 
-							<div class="flex flex-col  h-full pt-3 space-y-2">
+							<div class="flex items-center space-x-1">
+									<span class="text-secondary font-medium w-20 flex-shrink-0">Pages:</span>
+									<span class="text-primary">1 / 15</span>
+							</div>
 
+							<div class="flex items-start space-x-1">
+									<span class="text-secondary font-medium w-20 flex-shrink-0">Resolution:</span>
+									<span class="text-primary">612.00 x 792.00 points</span>
+							</div>
 
-								<!-- file upload -->
-								<div class="w-full bg-primary pl-4 pr-4 rounded-md border-primary">
+							<div class="flex items-center space-x-1">
+									<span class="text-secondary font-medium w-20 flex-shrink-0">Orientation:</span>
+									<span class="text-primary">portrait</span>
+							</div>
 
-									<h2 class="text-3xl pl-3 pt-3 mb-3 font-medium text-primary">File Upload</h2>
-
-										<div class="flex flex-row justify-center w-full ">
-
-												<form
-													hx-post="/upload" 
-													hx-target="#uploadStatus" 
-													hx-swap="beforeend"
-													enctype="multipart/form-data" 
-													method="post"
-													class="space-y-4 w-full h-full"
-												>
-
-												<label for="pdfs" class="flex flex-col items-center justify-center  w-full pt-4 pb-4 bg-secondary rounded-md border-primary border-1 hover:border-2 border-dashed text-center ">
-														<img src="../static/icons/upload.svg" alt="document icons" class="w-10 h-10">
-														<p class="mt-4 text-xl font-semibold text-secondary"><span>Click to upload or</span> <span>drag and drop</span></p>
-														<p class="text-sm text-tertiary">Only PDF files are processed</p>
-
-														<div id="fileListContainer" class="space-y-2">
-																<ol id="fileList" class="text-sm text-primary list-decimal "></ol>
-														</div>
-
-														<input id="pdfs" name="pdfs" type="file" multiple accept=".pdf" onchange="showFiles()" class="hidden">
-												</label>
+						</div>
 
 						
 				</div>
