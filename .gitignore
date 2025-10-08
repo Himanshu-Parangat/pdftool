@@ -1,4 +1,7 @@
 
+# Ignore auto genrated css
+static/styles/main.css 
+
 # Ignore Binaries
 bin/
 
