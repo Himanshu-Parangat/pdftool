@@ -67,20 +67,58 @@
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 12px;
+    height: 12px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: var(--color-bg-secondary); 
+    border-radius: 10px;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+    background: var(--color-text-secondary); 
+    border-radius: 10px;
+    border: 3px solid var(--color-bg-secondary); 
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    /* Use a slightly darker color or the accent primary color for hover */
+    background: var(--color-accent-primary); 
+
+}
+
+
+* {
+    /* scrollbar-width: thin;  */
+	scrollbar-width: auto;
+    scrollbar-color: var(--color-text-secondary) var(--color-bg-secondary); 
+}
+
+/* ------------------------------------------------------------------ */
+
+
+.scrolling-modefy::-webkit-scrollbar {
+    width: 8px; 
+    height: 8px;
+}
+
+.scrolling-modefy::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+.scrolling-modefy::-webkit-scrollbar-thumb {
+    background: var(--color-accent-primary); 
+    border-radius: 8px;
+    border: 2px solid var(--color-bg-secondary); 
+}
+
+.scrolling-modefy::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-secondary);
+}
+
+.scrolling-modefy {
+    /* scrollbar-width: thin; */
+	scrollbar-width: auto;
+    scrollbar-color: var(--color-accent-primary) var(--color-bg-secondary);
 }
